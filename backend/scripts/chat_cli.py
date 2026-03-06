@@ -1,72 +1,65 @@
 from app.graph.healthbot_graph import HealthBotGraph
-from langgraph.graph import END
+import asyncio
 
 
-def run_chat():
+
+async def main():
+    """
+    Run HealthBot in interactive CLI mode.
+    """
 
     graph = HealthBotGraph()
 
-    state = {}
-
     print("\nHealthBot - AI Patient Education\n")
-
-    config = {"configurable": {"thread_id": "healthbot-cli"}}
-
-    events = graph.graph.stream(state, config)
-
-    for event in events:
-
-        for node, output in event.items():
-
-            if node == END:
-                print("\nSession finished.")
-                return
-
-            if isinstance(output, dict):
-
-                if "topic" in output and output["topic"]:
-                    print(f"\nTopic: {output['topic']}")
-
-                if "summary" in output:
-                    print("\nSummary:\n")
-                    print(output["summary"])
-
-                if "quiz_question" in output:
-                    print("\nQuiz:\n")
-                    print(output["quiz_question"])
-
-                if "explanation" in output:
-                    print("\nEvaluation:\n")
-                    print(output["explanation"])
-
-
-def main():
 
     while True:
 
+        # Ask topic
         topic = input("\nWhat health topic would you like to learn about?\n> ")
 
-        graph = HealthBotGraph()
+        state = {
+            "topic": topic,
+            "continue_active": True
+        }
 
-        state = {"topic": topic}
+        # Run workflow
+        result = graph.run_workflow(state)
 
-        result = graph.run(state)
+        print(result)
 
-        print("\nSummary:\n", result["summary"])
-        print("\nQuiz:\n", result["quiz_question"])
+        summary = result["summary"]
+        quiz = result["quiz_question"]
 
+        if summary:
+            print("\nSummary:\n")
+            print(summary)
+
+        if quiz:
+            print("\nQuiz:\n")
+            print(quiz)
+
+        # Ask user answer
         answer = input("\nYour answer:\n> ")
 
-        result["user_answer"] = answer
+        result["patient_answer"] = answer
 
-        result = graph.run(result)
+        # Evaluate answer
+        result = graph.run_workflow(result)
 
-        print("\nEvaluation:\n", result["explanation"])
+        explanation = result["explanation"]
 
+        if explanation:
+            print("\nEvaluation:\n")
+            print(explanation)
+
+        # Continue session?
         cont = input("\nLearn another topic? (yes/no)\n> ")
 
-        if cont.lower() != "yes":
+        if cont.lower() not in ["yes", "y"]:
+            print("\nSession ended. Goodbye!\n")
             break
+
+        print("\n----------------------------------------")
 
 
 if __name__ == "__main__":

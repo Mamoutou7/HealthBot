@@ -17,8 +17,6 @@ class Settings(BaseSettings):
     llm_model (str): Default language model used by the application.
     temperature (float): Sampling temperature for the language model.
     """
-    API_KEY: str
-    API_SECRET: str
     openai_api_key: str
     tavily_api_key: str
 

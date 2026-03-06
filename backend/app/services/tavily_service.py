@@ -1,4 +1,6 @@
 from tavily import TavilyClient
+from langchain_core.tools import tool
+
 from app.config import settings
 
 
@@ -14,7 +16,7 @@ class TavilyService:
         self.client = TavilyClient(
             api_key=settings.tavily_api_key
         )
-
+    @tool
     def search_medical(self, query: str) -> str:
         """
         Perform a search query using Tavily and format the results.
@@ -34,3 +36,18 @@ class TavilyService:
         )
 
         return formatted
+
+
+
+
+if __name__ == "__main__":
+
+    node = TavilyService()
+
+    state = {
+        "topic": "Qu'est ce que le paracetamol ?"
+    }
+
+    result = node(state)
+
+    print(result["results"])

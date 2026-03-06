@@ -29,5 +29,5 @@ class TavilySearchNode:
 
         return {
             **state,
-            "results": results,
+            "search_results": results,
         }

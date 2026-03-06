@@ -10,14 +10,14 @@ def create_app() -> FastAPI:
         FastAPI: Configured FastAPI instance.
     """
 
-    app = FastAPI(
+    app_bot = FastAPI(
         title="HealthBot AI",
         version="1.0.0"
     )
 
-    app.include_router(router, prefix="/api")
+    app_bot.include_router(router, prefix="/api")
 
-    return app
+    return app_bot
 
 
 app = create_app()

@@ -3,7 +3,7 @@ from app.services.tavily_service import TavilyService
 
 
 
-class TravilySearchNode(HealthBotState):
+class TavilySearchNode:
     """
     LangGraph node responsible for retrieving medical information.
 
@@ -25,7 +25,7 @@ class TravilySearchNode(HealthBotState):
             HealthBotState: Updated state including search results.
         """
         topic = state["topic"]
-        results = self.search_service.search(topic)
+        results = self.search_service.search_medical(topic)
 
         return {
             **state,

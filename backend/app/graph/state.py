@@ -1,4 +1,4 @@
-from typing import Optional, TypedDict
+from typing import Optional, TypedDict, List
 
 class HealthBotState(TypedDict):
     """
@@ -15,10 +15,11 @@ class HealthBotState(TypedDict):
         session_active (bool): Indicates whether the session is active.
     """
     topic: Optional[str]
-    search_results: Optional[str]
+    search_results: Optional[List[str]]
     summary: Optional[str]
     quiz_question: Optional[str]
     patient_answer: Optional[str]
+    correct_answer: Optional[str]
     grade: Optional[str]
     explanation: Optional[str]
     ready_for_quiz: Optional[bool]

@@ -51,5 +51,5 @@ if __name__ == "__main__":
         print(results)
 
     except Exception as e:
-        print("\n❌ Error occurred:")
+        print("\n Error occurred:")
         print(e)
